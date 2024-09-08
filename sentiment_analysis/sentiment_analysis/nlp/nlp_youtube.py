@@ -1,18 +1,14 @@
-from transformers import ElectraTokenizer, TFElectraForSequenceClassification
-import tensorflow as tf
+from transformers import AutoTokenzier, AutoModelForSequenceClassification
+from scipy.special import softmax
 from sentiment_analysis.models import Comments
 
 
 def nlp_youtube():
     # gets all the comments from the database
-    id_with_content= list(Comments.objects.values_list('id','content'))
+    id_with_content = list(Comments.objects.values_list('id', 'content'))
 
     # Load tokenizer and model
-    tokenizer = ElectraTokenizer.from_pretrained(
-        "google/electra-small-discriminator")
-    model = TFElectraForSequenceClassification.from_pretrained(
-        "google/electra-small-discriminator")
-
+    
     # Tokenize the input
     inputs = tokenizer(content, return_tensors="tf",
                        padding=True, truncation=True)
